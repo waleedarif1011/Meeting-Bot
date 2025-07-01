@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Meeting Bot</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>Meeting Bot Assistant</h1>
+            <p>Upload your meeting transcript and chat with the AI assistant</p>
+        </header>
+
+        <div class="main-content">
+            <!-- Transcript Upload Section -->
+            <section class="upload-section">
+                <h2>Upload Meeting Transcript</h2>
+                <textarea 
+                    id="transcript-input" 
+                    placeholder="Paste your meeting transcript here..."
+                    rows="8"
+                ></textarea>
+                <button id="upload-btn" onclick="uploadTranscript()">Upload Transcript</button>
+                <div id="upload-status" class="status-message"></div>
+            </section>
+
+            <!-- Chat Section -->
+            <section class="chat-section">
+                <h2>Chat with Assistant</h2>
+                <div id="chat-container">
+                    <div id="chat-messages"></div>
+                    <div class="chat-input-container">
+                        <input 
+                            type="text" 
+                            id="chat-input" 
+                            placeholder="Ask about the meeting transcript..."
+                            onkeypress="handleChatKeyPress(event)"
+                        >
+                        <button id="send-btn" onclick="sendMessage()">Send</button>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,63 @@
+// For format details, see https://aka.ms/devcontainer.json. For config options, see the
+// README at: https://github.com/devcontainers/templates/tree/main/src/docker-existing-dockerfile
+{
+	"name": "Meeting Bot Environment",
+	"build": {
+		// Sets the run context to one level up instead of the .devcontainer folder.
+		"context": "..",
+		// Update the 'dockerFile' property if you aren't using the standard 'Dockerfile' filename.
+		"dockerfile": "Dockerfile"
+	},
+	// Features to add to the dev container. More info: https://containers.dev/features.
+	// "features": {},
+	// Use 'forwardPorts' to make a list of ports inside the container available locally.
+	"forwardPorts": [
+		5000,
+		3000
+	],
+	"portsAttributes": {
+		"5000": {
+			"label": "Flask Backend API",
+			"onAutoForward": "notify"
+		},
+		"3000": {
+			"label": "Frontend Web Server",
+			"onAutoForward": "openBrowser"
+		}
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/node": {},
+		"ghcr.io/dhoeric/features/hadolint:1": {}
+	},
+	"workspaceMount": "source=${localWorkspaceFolder},target=/app,type=bind",
+	"workspaceFolder": "/app",
+	// Uncomment the next line to run commands after the container is created.
+	// Configure tool-specific properties.
+	// "customizations": {},
+	// Uncomment to connect as an existing user other than the container default. More info: https://aka.ms/dev-containers-non-root.
+	"remoteUser": "root",
+	"customizations": {
+		"vscode": {
+			"extensions": [
+				"charliermarsh.ruff",
+				"ms-python.python",
+				"GitHub.vscode-pull-request-github",
+				"GitHub.copilot",
+				"shd101wyy.markdown-preview-enhanced",
+				"oderwat.indent-rainbow",
+				"exiasr.hadolint",
+				"actboy168.tasks",
+				"eamodio.gitlens",
+				"ms-vscode.makefile-tools"
+			],
+			"settings": {
+				"terminal.integrated.defaultProfile.linux": "bash",
+				"terminal.integrated.profiles.linux": {
+					"bash": {
+						"path": "/bin/bash"
+					}
+				}
+			}
+		}
+	}
+}
