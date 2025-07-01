@@ -41,13 +41,9 @@
 			"extensions": [
 				"charliermarsh.ruff",
 				"ms-python.python",
-				"GitHub.vscode-pull-request-github",
-				"GitHub.copilot",
 				"shd101wyy.markdown-preview-enhanced",
 				"oderwat.indent-rainbow",
 				"exiasr.hadolint",
-				"actboy168.tasks",
-				"eamodio.gitlens",
 				"ms-vscode.makefile-tools"
 			],
 			"settings": {
