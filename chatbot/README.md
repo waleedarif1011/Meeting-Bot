@@ -1,10 +1,10 @@
 # Meeting Bot - Chatbot Engine
 
-This document explains the **chatbot engine** for the Meeting Bot. The engine analyzes uploaded meeting transcripts and answers user questions about the meeting, such as participants, topics, action items, decisions, and summaries.
+This document explains the **chatbot engine implementation** for the Meeting Bot. The engine analyzes uploaded meeting transcripts and answers user questions about the meeting, such as participants, topics, action items, decisions, and summaries.
 
 ---
 
-## What Does the Engine Do?
+## What Does this Do?
 
 - **Extracts Participants:** Finds out who attended the meeting.
 - **Finds Action Items:** Lists tasks or responsibilities assigned during the meeting.
@@ -77,14 +77,6 @@ The engine uses regular expressions, word counting, and the Sumy TextRank algori
      - "Summarize the meeting."
 3. **Get Answers:**
    - The engine analyzes the transcript and returns clear, relevant answers.
-
----
-
-## How to Update or Extend
-
-- **Add new extraction logic:** Create a new function and call it from `respond()` if you want to support more types of questions.
-- **Improve accuracy:** Tweak regular expressions or add more advanced NLP as needed.
-- **Change summary style:** Adjust `summarize_meeting` or `summarize_with_textrank` for different summary formats.
 
 ---
 
