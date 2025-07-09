@@ -4,6 +4,16 @@ This document explains the **chatbot engine** for the Meeting Bot. The engine an
 
 ---
 
+## Example Output
+
+Below is a screenshot of the Meeting Bot Assistant in action, showing how users interact with meeting bot, upload a transcript and chat with the AI assistant to get meeting insights:
+
+<p align="center">
+  <img src="../assets/meeting-bot-demo.png" alt="Meeting Bot Assistant Demo" width="300" />
+</p>
+
+---
+
 ## What Does the Engine Do?
 
 - **Extracts Participants:** Finds out who attended the meeting.
