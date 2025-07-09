@@ -88,6 +88,16 @@ The engine uses regular expressions, word counting, and the Sumy TextRank algori
 
 ---
 
+---
+
+## Example Output
+
+Below is a screenshot of the Meeting Bot Assistant in action, showing how users can upload a transcript and chat with the AI assistant to get meeting insights:
+
+<p align="center">
+  <img src="../assets/meeting-bot-demo.png" alt="Meeting Bot Assistant Demo" width="300" />
+</p>
+
 ## See Also
 - [../README.md](../README.md) — Main project overview
 - [../server.py](../server.py) — Flask server that calls this engine
