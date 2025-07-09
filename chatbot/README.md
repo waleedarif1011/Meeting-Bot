@@ -88,7 +88,6 @@ The engine uses regular expressions, word counting, and the Sumy TextRank algori
 
 ---
 
----
 
 ## Example Output
 
