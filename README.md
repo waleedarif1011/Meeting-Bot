@@ -11,15 +11,15 @@ meeting-bot/
 │   ├── script.js                 # Handles sending chat messages and uploads
 │   └── style.css                 # Minimal styling
 ├── chatbot/
-│   └── engine.py                 # Python chatbot logic — YOUR TASK
+│   └── engine.py                 # Python chatbot logic — Want to improve this Chatbot logic, Update in this
 ├── server.py                     # Flask server with `/chat` and `/upload` endpoints
 ├── devcontainer.json             # VS Code Dev Container definition
 ├── Dockerfile                    # Python 3 + Flask environment
 ├── requirements.txt              # Flask and other Python deps
-└── README.md                     # This file
+└── README.md                 
 ```
 
-## 🚀 Quick Start
+## 🚀 Want to update Quick Start
 
 ### Option 1: Using VS Code Dev Container (Recommended) - Zero Setup!
 
@@ -53,8 +53,6 @@ meeting-bot/
    - Frontend: http://localhost:3000 (opens automatically)
    - Backend API: http://localhost:5000
 
-**That's it! 🎉 Ready to code your AI engine.**
-
 **Devcontainer Features**:
 - ✅ Python 3.11 + Flask pre-installed
 - ✅ Node.js + http-server for frontend
@@ -75,22 +73,9 @@ python server.py
 # Open frontend/index.html in your browser with live server
 ```
 
-## 🎯 Your Task
-
 **Primary Goal**: Implement intelligent meeting transcript analysis in `chatbot/engine.py`
 
-### What's Already Built
-
-✅ **Frontend**: Clean chat interface with transcript upload  
-✅ **Backend**: Flask server with session management  
-✅ **Infrastructure**: Docker + Dev Container setup  
-✅ **Session Handling**: In-memory storage with session IDs  
-
-### What You Need to Build
-
-🔨 **Replace the placeholder `respond()` function** in `chatbot/engine.py` with your AI implementation.
-
-**Expected Capabilities**:
+**Capabilities**:
 - Analyze uploaded meeting transcripts
 - Answer questions about meeting content
 - Extract key information (action items, decisions, participants)
@@ -113,13 +98,10 @@ User: "Summarize the key decisions made"
 Bot: [Provide summary of decisions]
 ```
 
-
-**Add your dependencies** to `requirements.txt` as needed.
-
 ## 🔧 System Architecture
 
 ```
-[Frontend] ──HTTP──> [Flask Server] ──Python──> [Your AI Engine]
+[Frontend] ──HTTP──> [Flask Server] ──Python──> [AI Engine]
     │                      │                         │
     │                      │                         │
     └── Chat UI            └── Session Management    └── Transcript Analysis
@@ -157,33 +139,14 @@ session_data = {
 }
 ```
 
-## 🎨 Evaluation Criteria
+## 🎨 Implemented
 
-- **Functionality**: Does the bot provide useful meeting insights?
+- **Functionality**: Bot provides useful meeting insights
 - **Code Quality**: Clean, readable, well-structured code
 - **AI Integration**: Effective use of AI/ML techniques
 - **User Experience**: Helpful and contextual responses
 - **Error Handling**: Graceful handling of edge cases
 - **Documentation**: Clear comments and approach explanation
-
-## 📝 Submission Guidelines
-
-1. **Implement your solution** in `chatbot/engine.py`
-2. **Update `requirements.txt`** with any new dependencies
-3. **Test thoroughly** with various transcript types
-4. **Document your approach** in the [chatbot/README.md](./chatbot/README.md)
-5. **Ensure it runs** in the provided dev container
-
-## 🔍 Testing Your Solution
-
-1. **Start the server**: `python server.py`
-2. **Open frontend**: `frontend/index.html`
-3. **Upload a sample transcript**
-4. **Test various questions**:
-   - "Summarize this meeting"
-   - "What action items were discussed?"
-   - "Who were the key participants?"
-   - "What decisions were made?"
 
 ## 📋 Sample Meeting Transcript
 
@@ -206,23 +169,4 @@ Action Items:
 - Mike: Investigate database performance (this week)
 - Sarah: Schedule design review for next Tuesday
 ```
-
-## 🛠️ Development Tips
-
-- **Start simple**: Basic keyword matching, then enhance
-- **Use the helper functions**: Provided scaffolding in `engine.py`
-- **Test incrementally**: Add features one at a time
-- **Handle edge cases**: Empty transcripts, invalid input
-- **Consider context**: Use chat history for better responses
-
-## 🤝 Support
-
-If you encounter technical issues with the setup:
-1. Check that all dependencies are installed
-2. Verify the server is running on port 5000
-3. Ensure CORS is properly configured
-4. Check browser console for frontend errors
-
 ---
-
-**Ready to code?** Open `chatbot/engine.py` and start building! 🚀
