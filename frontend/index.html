@@ -9,32 +9,33 @@
 <body>
     <div class="container">
         <header>
-            <h1>Meeting Bot Assistant</h1>
-            <p>Upload your meeting transcript and chat with the AI assistant</p>
+            <h1>Meeting Bot</h1>
+            <p>Upload a meeting transcript — or load the sample — and ask about summaries, action items, decisions, topics, and participants.</p>
         </header>
 
         <div class="main-content">
-            <!-- Transcript Upload Section -->
             <section class="upload-section">
-                <h2>Upload Meeting Transcript</h2>
-                <textarea 
-                    id="transcript-input" 
+                <h2>Meeting Transcript</h2>
+                <textarea
+                    id="transcript-input"
                     placeholder="Paste your meeting transcript here..."
                     rows="8"
                 ></textarea>
-                <button id="upload-btn" onclick="uploadTranscript()">Upload Transcript</button>
+                <div class="upload-actions">
+                    <button id="upload-btn" onclick="uploadTranscript()">Upload Transcript</button>
+                    <button id="sample-btn" class="secondary" onclick="loadSampleMeeting()">Load sample meeting</button>
+                </div>
                 <div id="upload-status" class="status-message"></div>
             </section>
 
-            <!-- Chat Section -->
             <section class="chat-section">
                 <h2>Chat with Assistant</h2>
                 <div id="chat-container">
                     <div id="chat-messages"></div>
                     <div class="chat-input-container">
-                        <input 
-                            type="text" 
-                            id="chat-input" 
+                        <input
+                            type="text"
+                            id="chat-input"
                             placeholder="Ask about the meeting transcript..."
                             onkeypress="handleChatKeyPress(event)"
                         >
@@ -45,6 +46,7 @@
         </div>
     </div>
 
+    <script src="config.js"></script>
     <script src="script.js"></script>
 </body>
 </html>

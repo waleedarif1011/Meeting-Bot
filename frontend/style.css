@@ -106,8 +106,23 @@ button:disabled {
     cursor: not-allowed;
 }
 
-#upload-btn {
+.upload-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+#upload-btn,
+#sample-btn {
     width: 100%;
+}
+
+button.secondary {
+    background-color: #5d6d7e;
+}
+
+button.secondary:hover:not(:disabled) {
+    background-color: #4a5a6a;
 }
 
 /* Status messages */
