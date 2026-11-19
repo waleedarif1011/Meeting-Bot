@@ -1,172 +1,132 @@
-# Meeting Bot Assessment
+# Meeting Bot
 
-A minimalistic meeting transcript analysis application that allows users to upload meeting transcripts and chat with an AI assistant about the contents. This is a coding assessment project designed to evaluate full-stack AI development skills.
+[![CI](https://github.com/waleedarif1011/meeting-bot/actions/workflows/ci.yml/badge.svg)](https://github.com/waleedarif1011/meeting-bot/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](LICENSE)
 
-## 🏗️ Project Structure
+> **Live Demo:** _Coming soon — deploy steps below. Set `frontend/config.js` `API_BASE_URL` to your Flask host, then deploy `frontend/` to Vercel._
+
+Upload a meeting transcript (or load the built-in sample) and chat for **summaries**, **action items**, **decisions**, **topics**, and **participants**.
+
+![Meeting Bot demo](assets/meeting-bot-demo.png)
+
+## Features
+
+- One-click **Load sample meeting** for instant demos
+- TextRank summarization (Sumy + NLTK) — no LLM API key required
+- Extraction of attendees, action items, decisions, and topics
+- Stateless session chat over a small Flask API
+- Static UI ready for Vercel; API ready for Railway or Render
+
+## Architecture
+
+```
+┌─────────────────────┐       HTTPS        ┌──────────────────────┐
+│  Frontend (Vercel)  │ ─────────────────► │  Flask API           │
+│  HTML / CSS / JS    │                    │  Railway / Render    │
+└─────────────────────┘                    │         │            │
+                                           │         ▼            │
+                                           │  chatbot/engine.py   │
+                                           │  Sumy TextRank + NLP │
+                                           └──────────────────────┘
+```
+
+## Quick start (local)
+
+```bash
+python -m venv .venv && source .venv/bin/activate
+pip install -r requirements.txt
+python server.py
+```
+
+In another terminal:
+
+```bash
+cd frontend && python -m http.server 3000
+```
+
+Open http://localhost:3000 — or use `./start-dev.sh` inside the Dev Container ([DEV_SETUP.md](DEV_SETUP.md)).
+
+## API
+
+| Method | Path | Purpose |
+|--------|------|---------|
+| `GET` | `/health` | Health check (`{"status":"ok"}`) |
+| `GET` | `/sample` | Built-in Q4 planning transcript |
+| `POST` | `/upload` | `{ "transcript": "...", "session_id": "..." }` |
+| `POST` | `/chat` | `{ "message": "...", "session_id": "..." }` → `{ "response": "..." }` |
+
+CORS is enabled. Bind port via `PORT` (default `5000`).
+
+## Deploy
+
+### 1. Flask API (Railway or Render)
+
+**Railway**
+
+1. New project → Deploy from GitHub → select this repo.
+2. Start command: `python server.py` (or use the included `Procfile`).
+3. Set Python to 3.11 if prompted (`runtime.txt` pins 3.11.9).
+4. Copy the public URL (e.g. `https://meeting-bot-api.up.railway.app`).
+
+**Render**
+
+1. New **Web Service** → connect this repo.
+2. Build: `pip install -r requirements.txt`
+3. Start: `python server.py`
+4. Instance type: free/starter is enough for demos.
+
+Confirm: `curl https://YOUR-API-HOST/health` → `{"status":"ok"}`.
+
+### 2. Frontend (Vercel)
+
+1. Update `frontend/config.js`:
+
+   ```js
+   window.API_BASE_URL = "https://YOUR-API-HOST";
+   ```
+
+2. Deploy with the repo-root `vercel.json` (serves `frontend/` as static files):
+
+   ```bash
+   npx vercel --prod
+   ```
+
+   Or: Vercel Dashboard → Import Git repo → Framework Preset **Other** → root directory `.` (uses `vercel.json`).
+
+3. Open the Vercel URL → **Load sample meeting** → ask e.g. “What were the action items?”
+
+> **Note:** Live demo URL is a placeholder until API + Vercel credentials are available in this environment. After you deploy, replace the Live Demo line at the top of this README with your Vercel URL.
+
+## Tests
+
+```bash
+pip install -r requirements.txt
+pytest -q
+```
+
+CI runs the same suite on every push/PR via [.github/workflows/ci.yml](.github/workflows/ci.yml).
+
+## Project layout
 
 ```
 meeting-bot/
-├── frontend/
-│   ├── index.html                # Chat UI and transcript upload interface
-│   ├── script.js                 # Handles sending chat messages and uploads
-│   └── style.css                 # Minimal styling
+├── frontend/           # Static UI (Vercel)
+│   ├── config.js       # API_BASE_URL
+│   ├── index.html
+│   ├── script.js
+│   └── style.css
 ├── chatbot/
-│   └── engine.py                 # Python chatbot logic — Want to improve this Chatbot logic, Update in this
-├── server.py                     # Flask server with `/chat` and `/upload` endpoints
-├── devcontainer.json             # VS Code Dev Container definition
-├── Dockerfile                    # Python 3 + Flask environment
-├── requirements.txt              # Flask and other Python deps
-└── README.md                 
+│   ├── engine.py       # NLP extraction + TextRank
+│   └── README.md
+├── tests/
+├── server.py           # Flask API
+├── vercel.json
+├── Procfile            # Railway/Render
+└── requirements.txt
 ```
 
-## 🚀 Want to update Quick Start
+More detail: [chatbot/README.md](chatbot/README.md) · [DEV_SETUP.md](DEV_SETUP.md)
 
-### Option 1: Using VS Code Dev Container (Recommended) - Zero Setup!
+## License
 
-**Prerequisites**: 
-- [Docker](https://www.docker.com/get-started) installed
-- [VS Code](https://code.visualstudio.com/) with [Remote Development Extension Pack](https://marketplace.visualstudio.com/items?itemName=ms-vscode-remote.vscode-remote-extensionpack)
-
-**Setup Steps (30 seconds)**:
-
-1. **Open in VS Code**
-   ```bash
-   code meeting-bot  # Or File > Open Folder in VS Code
-   ```
-
-2. **Reopen in Container**
-   - VS Code will show: "Folder contains a Dev Container configuration file. Reopen folder to develop in a container"
-   - Click **"Reopen in Container"**
-   - Alternative: Press `F1` → "Remote-Containers: Reopen in Container"
-
-3. **Wait for automatic setup** (first time only)
-   - Docker builds the development environment
-   - All dependencies install automatically
-   - VS Code extensions configure automatically
-
-4. **Start both frontend and backend**
-   ```bash
-   ./start-dev.sh
-   ```
-
-5. **Access the application**
-   - Frontend: http://localhost:3000 (opens automatically)
-   - Backend API: http://localhost:5000
-
-**Devcontainer Features**:
-- ✅ Python 3.11 + Flask pre-installed
-- ✅ Node.js + http-server for frontend
-- ✅ Automatic port forwarding (3000, 5000)
-- ✅ VS Code extensions (Python, Copilot, Git tools)
-- ✅ Zero manual dependency installation
-
-
-### Option 2: Local Development
-
-```bash
-# Install dependencies
-pip install -r requirements.txt
-
-# Start the server
-python server.py
-
-# Open frontend/index.html in your browser with live server
-```
-
-**Primary Goal**: Implement intelligent meeting transcript analysis in `chatbot/engine.py`
-
-**Capabilities**:
-- Analyze uploaded meeting transcripts
-- Answer questions about meeting content
-- Extract key information (action items, decisions, participants)
-- Maintain conversation context
-- Provide summaries and insights
-
-### Sample Interactions
-
-```
-User: "What were the main topics discussed?"
-Bot: [Analyze transcript and list key topics]
-
-User: "What action items were assigned?"
-Bot: [Extract and list action items with assignees]
-
-User: "Who participated in this meeting?"
-Bot: [Identify and list participants]
-
-User: "Summarize the key decisions made"
-Bot: [Provide summary of decisions]
-```
-
-## 🔧 System Architecture
-
-```
-[Frontend] ──HTTP──> [Flask Server] ──Python──> [AI Engine]
-    │                      │                         │
-    │                      │                         │
-    └── Chat UI            └── Session Management    └── Transcript Analysis
-        Upload Interface       Memory Storage            Response Generation
-```
-
-### API Endpoints
-
-- **POST `/upload`**: Upload meeting transcript
-  ```json
-  {
-    "transcript": "Meeting transcript text...",
-    "session_id": "session_abc123"
-  }
-  ```
-
-- **POST `/chat`**: Send chat message
-  ```json
-  {
-    "message": "What were the action items?",
-    "session_id": "session_abc123"
-  }
-  ```
-
-### Session Data Structure
-
-```python
-session_data = {
-    'transcript': 'Full meeting transcript text',
-    'chat_history': [
-        {'sender': 'user', 'content': 'User message'},
-        {'sender': 'bot', 'content': 'Bot response'}
-    ],
-    'session_id': 'unique_session_identifier'
-}
-```
-
-## 🎨 Implemented
-
-- **Functionality**: Bot provides useful meeting insights
-- **Code Quality**: Clean, readable, well-structured code
-- **AI Integration**: Effective use of AI/ML techniques
-- **User Experience**: Helpful and contextual responses
-- **Error Handling**: Graceful handling of edge cases
-- **Documentation**: Clear comments and approach explanation
-
-## 📋 Sample Meeting Transcript
-
-```
-Meeting: Q4 Planning Session
-Date: 2024-01-15
-Attendees: Sarah (Product Manager), Mike (Engineer), Lisa (Designer)
-
-Sarah: Let's discuss our Q4 roadmap. We need to prioritize the new user dashboard.
-Mike: I can start working on the backend APIs. Should take about 3 weeks.
-Lisa: I'll handle the UI mockups. Can have them ready by Friday.
-Sarah: Great. Mike, can you also look into the performance issues we discussed?
-Mike: Absolutely. I'll investigate the database queries this week.
-Lisa: Should we schedule a design review for next Tuesday?
-Sarah: Yes, let's do that. I'll send out calendar invites.
-
-Action Items:
-- Mike: Develop backend APIs (3 weeks)
-- Lisa: Create UI mockups (by Friday)
-- Mike: Investigate database performance (this week)
-- Sarah: Schedule design review for next Tuesday
-```
----
+MIT — see [LICENSE](LICENSE).

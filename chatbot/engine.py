@@ -8,8 +8,26 @@ Implemented features:
 
 import re
 from collections import Counter
+
+import nltk
+from sumy.nlp.tokenizers import Tokenizer
 from sumy.parsers.plaintext import PlaintextParser
 from sumy.summarizers.text_rank import TextRankSummarizer
+
+
+def _ensure_nltk_data():
+    """Download punkt tokenizer data on cold boot if missing."""
+    for name in ("punkt", "punkt_tab"):
+        try:
+            nltk.data.find(f"tokenizers/{name}")
+        except LookupError:
+            nltk.download(name, quiet=True)
+        except OSError:
+            # Some NLTK versions raise OSError for incomplete installs
+            nltk.download(name, quiet=True)
+
+
+_ensure_nltk_data()
 
 # --- PARTICIPANT EXTRACTION ---
 def get_participant_names(transcript):
@@ -181,7 +199,7 @@ def summarize_with_textrank(transcript, top_n=3):
     Summarizes the transcript using the TextRank algorithm (from the Sumy library).
     Returns a short summary string with the top N sentences.
     """
-    parser = PlaintextParser.from_string(transcript, PlaintextParser.from_string(transcript, PlaintextParser.from_string))
+    parser = PlaintextParser.from_string(transcript, Tokenizer("english"))
     summarizer = TextRankSummarizer()
     summary = summarizer(parser.document, top_n)
     return ' '.join([str(sentence) for sentence in summary])
