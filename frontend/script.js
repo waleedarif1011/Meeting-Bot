@@ -1,5 +1,12 @@
-// Configuration — prefer window.API_BASE_URL from config.js
-const API_BASE_URL = window.API_BASE_URL || "http://localhost:5000";
+// Prefer window.API_BASE_URL from config.js (query / meta / inject / same-origin / localhost)
+// Empty string means same origin (Flask single-deploy).
+function getApiBaseUrl() {
+    if (typeof window.API_BASE_URL === "string") {
+        return window.API_BASE_URL.replace(/\/+$/, "");
+    }
+    return "http://localhost:5000";
+}
+
 let sessionId = generateSessionId();
 
 function generateSessionId() {
@@ -21,7 +28,7 @@ async function uploadTranscript() {
     showStatus("Uploading transcript...", "info");
 
     try {
-        const response = await fetch(`${API_BASE_URL}/upload`, {
+        const response = await fetch(`${getApiBaseUrl()}/upload`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ transcript, session_id: sessionId }),
@@ -53,7 +60,7 @@ async function loadSampleMeeting() {
     showStatus("Loading sample meeting...", "info");
 
     try {
-        const response = await fetch(`${API_BASE_URL}/sample`);
+        const response = await fetch(`${getApiBaseUrl()}/sample`);
         const data = await response.json();
 
         if (!response.ok || !data.transcript) {
@@ -63,7 +70,7 @@ async function loadSampleMeeting() {
 
         transcriptInput.value = data.transcript;
 
-        const uploadResponse = await fetch(`${API_BASE_URL}/upload`, {
+        const uploadResponse = await fetch(`${getApiBaseUrl()}/upload`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
@@ -103,7 +110,7 @@ async function sendMessage() {
     sendBtn.textContent = "Sending...";
 
     try {
-        const response = await fetch(`${API_BASE_URL}/chat`, {
+        const response = await fetch(`${getApiBaseUrl()}/chat`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ message, session_id: sessionId }),

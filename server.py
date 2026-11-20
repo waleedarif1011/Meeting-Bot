@@ -1,11 +1,14 @@
 import os
+from pathlib import Path
 
-from flask import Flask, jsonify, request
+from flask import Flask, jsonify, request, send_from_directory
 from flask_cors import CORS
 
 from chatbot.engine import respond
 
-app = Flask(__name__)
+FRONTEND_DIR = Path(__file__).resolve().parent / "frontend"
+
+app = Flask(__name__, static_folder=None)
 CORS(app)
 
 # In-memory session storage
@@ -82,6 +85,21 @@ def chat():
     session_data["chat_history"].append({"sender": "bot", "content": response_message})
 
     return jsonify({"response": response_message}), 200
+
+
+@app.route("/")
+def index():
+    """Single-deploy: serve the chat UI from the same Flask process."""
+    return send_from_directory(FRONTEND_DIR, "index.html")
+
+
+@app.route("/<path:asset_path>")
+def frontend_assets(asset_path):
+    """Serve static frontend assets (config.js, script.js, style.css, …)."""
+    candidate = FRONTEND_DIR / asset_path
+    if candidate.is_file():
+        return send_from_directory(FRONTEND_DIR, asset_path)
+    return jsonify({"error": "Not found"}), 404
 
 
 if __name__ == "__main__":
