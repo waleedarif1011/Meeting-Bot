@@ -63,3 +63,16 @@ def test_chat_missing_session(client):
 def test_chat_requires_fields(client):
     response = client.post("/chat", json={"message": "hi"})
     assert response.status_code == 400
+
+
+def test_serves_frontend_index(client):
+    response = client.get("/")
+    assert response.status_code == 200
+    assert b"Meeting Bot" in response.data
+    assert b"config.js" in response.data
+
+
+def test_serves_frontend_asset(client):
+    response = client.get("/config.js")
+    assert response.status_code == 200
+    assert b"API_BASE_URL" in response.data
